@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Base URL
-const BASE_URL = "http://192.168.0.210:8080/api/wishlist";
+const BASE_URL = `${import.meta.env.VITE_API_URL}/wishlist`;
 
 // Fetch wishlist
 export const fetchWishlist = createAsyncThunk(

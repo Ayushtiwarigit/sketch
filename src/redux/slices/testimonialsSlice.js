@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://192.168.0.210:8080/api/testimonials";
+const API_URL = `${import.meta.env.VITE_API_URL}/testimonials`;
 
 // ✅ Fetch testimonials from API, optionally with limit
 export const fetchTestimonials = createAsyncThunk(

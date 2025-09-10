@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://192.168.0.210:8080/api/bestsellers/";
+const API_URL = `${import.meta.env.VITE_API_URL}/bestsellers/`;
 
 // ✅ Fetch all bestsellers
 export const fetchBestsellers = createAsyncThunk(

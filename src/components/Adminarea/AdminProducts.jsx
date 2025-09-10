@@ -9,6 +9,10 @@ import {
 } from "../../redux/slices/productSlice.js";
 import { toast } from "react-toastify";
 
+
+
+const img_url="http://sketchapi.vercel.app"
+
 const AdminProducts = () => {
   const dispatch = useDispatch();
   const { products, product, loading, error, message } = useSelector(
@@ -148,6 +152,12 @@ const AdminProducts = () => {
         document.title = "SketchWebsite - AdminProducts";
       }, []);
 
+
+
+
+    console.log("<><>>RRRRRRRRR",product,products)
+
+
   return (
     <div className="p-6">
       {/* Header */}
@@ -194,7 +204,7 @@ const AdminProducts = () => {
           <p className="text-gray-600">Product ID: {product._id}</p>
           {product.image && (
             <img
-              src={product.image}
+              src={product?.image}
               alt={product.title}
               className="w-32 h-32 object-cover rounded mt-2"
             />

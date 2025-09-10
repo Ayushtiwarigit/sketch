@@ -395,9 +395,10 @@ const ProductDetails = () => {
     }
   };
 
-  const mediaList = product
-    ? [product.image, ...(product.gallery || []), ...(product.videos || [])]
-    : [];
+const mediaList = product
+  ? [product.image, ...(product.gallery || []), ...(product.videos || [])].filter(Boolean)
+  : [];
+
 
   return (
     <>
@@ -481,7 +482,8 @@ const ProductDetails = () => {
                     />
                   ))
                 : mediaList.map((media, index) => {
-                    const isVideo = media.endsWith(".mp4");
+                 const isVideo = media.endsWith(".mp4");
+
                     return (
                       <div
                         key={index}
