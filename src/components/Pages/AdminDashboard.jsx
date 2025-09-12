@@ -52,8 +52,8 @@ export default function AdminDashboard() {
           {/* Logo */}
           <div className="flex items-center justify-between px-4 py-5 border-b border-gray-200">
             {sidebarOpen && (
-              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#d4a373] to-[#b9855c]">
-                SketchLogo
+              <h2 className="text-2xl font-greatvibes font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#d4a373] to-[#b9855c]">
+                Shejalart
               </h2>
             )}
             <button

@@ -12,11 +12,16 @@ export default function Banner() {
       />
 
       {/* Centered Text */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <h1 className="text-dark text-4xl md:text-6xl font-bold text-center drop-shadow-lg">
-          Welcome to SketchLogo
-        </h1>
-      </div>
+ <div className="absolute inset-0 flex items-center justify-center mt-10">
+  <h1 className="text-white text-4xl md:text-6xl font-bold text-center drop-shadow-lg">
+    Welcome to{" "}
+    <strong className="font-greatvibes text-[#f0eae5]">
+      ShejalArt
+    </strong>
+  </h1>
+</div>
+``
+
     </div>
   );
 }

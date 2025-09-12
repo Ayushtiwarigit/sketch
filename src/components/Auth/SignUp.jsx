@@ -50,7 +50,7 @@ export default function Signup() {
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         {/* Logo */}
         <div
-          className="text-[#b9855c] font-bold text-2xl cursor-pointer mb-4 text-center"
+          className="text-[#b9855c] font-bold text-2xl cursor-pointer mb-4 text-center font-greatvibes"
           onClick={() => {
             if (token) {
               navigate("/"); 
@@ -59,7 +59,7 @@ export default function Signup() {
             }
           }}
         >
-          SketchLogo
+          ShejalArt
         </div>
 
         <h2 className="text-2xl font-bold text-[#b9855c] mb-6 text-center">Signup</h2>

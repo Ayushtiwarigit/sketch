@@ -100,26 +100,26 @@ export default function ContactPage() {
 
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-gray-800">Email:</p>
-              <p className="text-gray-700 break-words text-sm sm:text-base">contact@yourcompany.com</p>
+              <p className="text-gray-700 break-words text-sm sm:text-base">shejaltiwari21@gmail.com</p>
             </div>
 
             <div className="flex flex-col gap-2">
               <p className="font-semibold text-gray-800">Phone:</p>
-              <p className="text-gray-700 text-sm sm:text-base">+91 123 456 7890</p>
+              <p className="text-gray-700 text-sm sm:text-base">+91 7067155318</p>
             </div>
 
             {/* Social Links */}
             <div className="flex gap-4 mt-4 flex-wrap">
-              <motion.a
+              {/* <motion.a
                 href="https://facebook.com"
                 target="_blank"
                 className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition"
                 whileHover={{ scale: 1.2 }}
               >
                 <FaFacebookF size={18} />
-              </motion.a>
+              </motion.a> */}
               <motion.a
-                href="https://instagram.com"
+                href="https://www.instagram.com/shejal_art0121?igsh=MXE5ZnNmemhkMXMzNQ=="
                 target="_blank"
                 className="bg-pink-500 text-white p-3 rounded-full hover:bg-pink-600 transition"
                 whileHover={{ scale: 1.2 }}
@@ -127,7 +127,7 @@ export default function ContactPage() {
                 <FaInstagram size={18} />
               </motion.a>
               <motion.a
-                href="https://youtube.com"
+                href="https://www.youtube.com/@shejal_art0121"
                 target="_blank"
                 className="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 transition"
                 whileHover={{ scale: 1.2 }}

@@ -5,25 +5,25 @@ const pricingData = [
   {
     category: "Pencil Sketch",
     plans: [
-      { size: "A4 (8.3 × 11.7 in)", price: "₹1,499" },
-      { size: "A3 (11.7 × 16.5 in)", price: "₹2,499" },
-      { size: "A2 (16.5 × 23.4 in)", price: "₹4,499" },
+      { size: "A4 ", price: "₹500" },
+      { size: "A3", price: "₹1000" },
+      // { size: "A2 (16.5 × 23.4 in)", price: "₹4,499" },
     ],
   },
   {
     category: "Color Sketch",
     plans: [
-      { size: "A4 (8.3 × 11.7 in)", price: "₹2,499" },
-      { size: "A3 (11.7 × 16.5 in)", price: "₹3,999" },
-      { size: "A2 (16.5 × 23.4 in)", price: "₹6,999" },
+      { size: "A4 ", price: "₹899" },
+      { size: "A3", price: "₹1299" },
+      // { size: "A2 (16.5 × 23.4 in)", price: "₹6,999" },
     ],
   },
   {
     category: "Couple Portrait",
     plans: [
-      { size: "A4 (8.3 × 11.7 in)", price: "₹3,499" },
-      { size: "A3 (11.7 × 16.5 in)", price: "₹5,499" },
-      { size: "A2 (16.5 × 23.4 in)", price: "₹8,499" },
+      { size: "A4 ", price: "₹700" },
+      { size: "A3", price: "₹1499" },
+      // { size: "A2 (16.5 × 23.4 in)", price: "₹8,499" },
     ],
   },
 ];

@@ -44,10 +44,10 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            At SketchLogo, we create beautiful pencil, color, and couple
-            sketches that bring your memories to life. Our talented artists
+            At Shejal Art, we create beautiful pencil, color, and couple
+            sketches that bring your memories to life. Also
             handcraft each piece with love and precision. Customers can place
-            orders for portraits, pets, or custom themes, and our admin manages
+            orders for portraits, pets, or custom themes, and we manage
             creation and delivery, ensuring top-quality artwork every time.
           </motion.p>
         </section>

@@ -56,12 +56,13 @@ export default function Header() {
     <header className={`w-full shadow-md ${themeBg}`}>
       <div className="container mx-auto flex flex-wrap items-center justify-between py-4 px-4">
         {/* Logo */}
-        <div
-          className="text-white font-bold text-2xl cursor-pointer"
-          onClick={() => navigate(token ? "/home" : "/signup")}
-        >
-          SketchLogo
-        </div>
+      <div
+  className="text-white text-4xl cursor-pointer font-greatvibes"
+  onClick={() => navigate(token ? "/home" : "/signup")}
+>
+  ShejalArt
+</div>
+
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">

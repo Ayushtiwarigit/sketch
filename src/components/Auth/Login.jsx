@@ -49,7 +49,7 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#d4a373] to-[#b9855c]">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
         <div
-          className="text-[#b9855c] font-bold text-2xl cursor-pointer mb-4 text-center"
+          className="text-[#b9855c] font-bold text-2xl cursor-pointer mb-4 text-center font-greatvibes"
           onClick={() => {
             if (token) {
               navigate("/home");
@@ -58,7 +58,7 @@ export default function Login() {
             }
           }}
         >
-          SketchLogo
+         ShejalArt
         </div>
 
         <h2 className="text-2xl font-bold text-[#b9855c] mb-6 text-center">Login</h2>
