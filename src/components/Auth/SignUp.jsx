@@ -113,7 +113,7 @@ export default function Signup() {
           >
             <option value="">Select Role</option>
             <option value="user">User</option>
-            <option value="admin">Admin</option>
+            {/* <option value="admin">Admin</option> */}
           </select>
 
           <button

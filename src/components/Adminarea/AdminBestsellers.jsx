@@ -1,14 +1,17 @@
-// src/pages/admin/AdminBestsellers.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchBestsellers,
   createBestseller,
+  updateBestseller,
+  deleteBestseller,
   fetchBestsellerById,
   clearBestsellersState,
 } from "../../redux/slices/bestsellersSlice.js";
-import { toast } from "react-toastify";
+
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 const AdminBestsellers = () => {
   const dispatch = useDispatch();
@@ -17,12 +20,17 @@ const AdminBestsellers = () => {
   );
 
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     bio: "",
     image: null,
     videos: null,
   });
+  const [editId, setEditId] = useState(null);
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   // ✅ Fetch bestsellers on mount
   useEffect(() => {
@@ -32,11 +40,16 @@ const AdminBestsellers = () => {
     };
   }, [dispatch]);
 
-  // ✅ Show toast messages
+  // ✅ Show only one toast
   useEffect(() => {
-    if (error) toast.error(error);
-    if (success && message) toast.success(message);
+    toast.dismiss(); // close any previous toasts
+    if (error) toast.error(error, { toastId: "mainToast" });
+    if (success && message) toast.success(message, { toastId: "mainToast" });
   }, [error, success, message]);
+
+  useEffect(() => {
+    document.title = "SketchWebsite - AdminBestsellers";
+  }, []);
 
   // ✅ Handle form input
   const handleInputChange = (e) => {
@@ -51,52 +64,107 @@ const AdminBestsellers = () => {
     }
   };
 
-  // ✅ Submit form
-  // ✅ Submit form
-const handleSubmit = async (e) => {
-  e.preventDefault(); // stop page reload
+  // ✅ Submit form (create or update)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const fd = new FormData();
-  fd.append("name", formData.name);
-  fd.append("bio", formData.bio);
+    const fd = new FormData();
+    fd.append("name", formData.name);
+    fd.append("bio", formData.bio);
 
-  if (formData.image) fd.append("image", formData.image);
+    if (formData.image) fd.append("image", formData.image);
 
-  if (formData.videos) {
-    if (formData.videos.length) {
-      for (let i = 0; i < formData.videos.length; i++) {
-        fd.append("videos", formData.videos[i]);
+    if (formData.videos) {
+      if (formData.videos.length) {
+        for (let i = 0; i < formData.videos.length; i++) {
+          fd.append("videos", formData.videos[i]);
+        }
+      } else {
+        fd.append("videos", formData.videos);
       }
-    } else {
-      fd.append("videos", formData.videos);
     }
-  }
 
-  const resultAction = await dispatch(createBestseller({ formData: fd }));
+    let resultAction;
+    if (isEditing && editId) {
+      resultAction = await dispatch(updateBestseller({ id: editId, formData: fd }));
+    } else {
+      resultAction = await dispatch(createBestseller(fd));
+    }
 
-  if (createBestseller.fulfilled.match(resultAction)) {
-    setShowModal(false);
-    setFormData({ name: "", bio: "", image: null, videos: null });
-  }
-};
-
+    if (
+      createBestseller.fulfilled.match(resultAction) ||
+      updateBestseller.fulfilled.match(resultAction)
+    ) {
+      setShowModal(false);
+      setFormData({ name: "", bio: "", image: null, videos: null });
+      setIsEditing(false);
+      setEditId(null);
+    }
+  };
 
   // ✅ Handle view action
   const handleView = (id) => {
     dispatch(fetchBestsellerById(id));
     setShowModal(true);
+    setIsEditing(false);
   };
- useEffect(() => {
-        document.title = "SketchWebsite - AdminBestsellers";
-      }, []);
+
+  // ✅ Handle edit action
+  const handleEdit = (item) => {
+    setIsEditing(true);
+    setEditId(item._id);
+    setFormData({
+      name: item.name,
+      bio: item.bio,
+      image: null,
+      videos: null,
+    });
+    setShowModal(true);
+  };
+
+  // ✅ Open delete modal
+  const handleDeleteClick = (id) => {
+    setDeleteId(id);
+    setDeleteModal(true);
+  };
+
+  // ✅ Confirm delete
+  const confirmDelete = async () => {
+    setDeleteModal(false);
+    if (!deleteId) return;
+
+    const result = await dispatch(deleteBestseller(deleteId));
+
+    if (deleteBestseller.fulfilled.match(result)) {
+      toast.success(result.payload?.message || "Deleted successfully", {
+        toastId: "mainToast",
+      });
+    } else {
+      const errMsg = result.payload || result.error?.message || "Failed to delete";
+      toast.error(errMsg, { toastId: "mainToast" });
+    }
+
+    setDeleteId(null);
+  };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 relative">
+      <ToastContainer position="top-right" />
+
+      {/* Loader Overlay */}
+      {loading && (
+        <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white px-6 py-3 rounded shadow">Please wait...</div>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={() => {
-            setFormData({ name: "", bio: "", image: null, videos: null }); // reset form
+            setFormData({ name: "", bio: "", image: null, videos: null });
+            setIsEditing(false);
+            setEditId(null);
             setShowModal(true);
           }}
           className="bg-gradient-to-r from-[#d4a373] to-[#b9855c] text-white px-4 py-2 rounded"
@@ -118,13 +186,7 @@ const handleSubmit = async (e) => {
             </tr>
           </thead>
           <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan={5} className="p-4 text-center">
-                  Loading...
-                </td>
-              </tr>
-            ) : items.length === 0 ? (
+            {items.length === 0 ? (
               <tr>
                 <td colSpan={5} className="p-4 text-center">
                   No bestsellers found.
@@ -144,12 +206,29 @@ const handleSubmit = async (e) => {
                     />
                   </td>
                   <td className="p-2 border">
-                    <button
-                      onClick={() => handleView(item._id)}
-                      className="bg-blue-500 text-white px-2 py-1 rounded"
-                    >
-                      View
-                    </button>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => handleView(item._id)}
+                        className="text-blue-500"
+                        title="View"
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="text-green-500"
+                        title="Edit"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(item._id)}
+                        className="text-red-500"
+                        title="Delete"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -158,7 +237,31 @@ const handleSubmit = async (e) => {
         </table>
       </div>
 
-      {/* Modal */}
+      {/* Delete Confirmation Modal */}
+      {deleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded p-6 w-full max-w-sm">
+            <h3 className="text-lg font-bold mb-4">Confirm Delete</h3>
+            <p>Are you sure you want to delete this bestseller?</p>
+            <div className="flex justify-end gap-3 mt-4">
+              <button
+                onClick={() => setDeleteModal(false)}
+                className="bg-gray-300 px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="bg-red-500 text-white px-4 py-2 rounded"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add/Edit/View Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded p-6 w-full max-w-lg relative">
@@ -170,10 +273,14 @@ const handleSubmit = async (e) => {
             </button>
 
             <h2 className="text-xl font-bold mb-4">
-              {bestseller ? "View Bestseller" : "Add Bestseller"}
+              {isEditing
+                ? "Edit Bestseller"
+                : bestseller
+                ? "View Bestseller"
+                : "Add Bestseller"}
             </h2>
 
-            {bestseller ? (
+            {bestseller && !isEditing ? (
               <div>
                 <p>
                   <strong>Name:</strong> {bestseller.name}
@@ -200,48 +307,46 @@ const handleSubmit = async (e) => {
                 )}
               </div>
             ) : (
-             <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-  <input
-    type="text"
-    name="name"
-    placeholder="Name"
-    value={formData.name}
-    onChange={handleInputChange}
-    className="border px-3 py-2 rounded"
-    required
-  />
-  <textarea
-    name="bio"
-    placeholder="Bio"
-    value={formData.bio}
-    onChange={handleInputChange}
-    className="border px-3 py-2 rounded"
-    required
-  />
-  <input
-    type="file"
-    name="image"
-    onChange={handleInputChange}
-    className="border px-3 py-2 rounded"
-    accept="image/*"
-    required
-  />
-  <input
-    type="file"
-    name="videos"
-    onChange={handleInputChange}
-    className="border px-3 py-2 rounded"
-    accept="video/*"
-    multiple
-  />
-  <button
-    type="submit"
-    className="bg-gradient-to-r from-[#d4a373] to-[#b9855c] text-white px-4 py-2 rounded"
-  >
-    Create
-  </button>
-</form>
-
+              <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="border px-3 py-2 rounded"
+                  required
+                />
+                <textarea
+                  name="bio"
+                  placeholder="Bio"
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  className="border px-3 py-2 rounded"
+                  required
+                />
+                <input
+                  type="file"
+                  name="image"
+                  onChange={handleInputChange}
+                  className="border px-3 py-2 rounded"
+                  accept="image/*"
+                />
+                <input
+                  type="file"
+                  name="videos"
+                  onChange={handleInputChange}
+                  className="border px-3 py-2 rounded"
+                  accept="video/*"
+                  multiple
+                />
+                <button
+                  type="submit"
+                  className="bg-gradient-to-r from-[#d4a373] to-[#b9855c] text-white px-4 py-2 rounded"
+                >
+                  {isEditing ? "Update" : "Create"}
+                </button>
+              </form>
             )}
           </div>
         </div>
