@@ -85,7 +85,7 @@ export const updateBestseller = createAsyncThunk(
       const token = localStorage.getItem("token");
       if (!token) return rejectWithValue("Admin token missing");
 
-      const response = await axios.put(`${API_URL}${id}`, formData, {
+      const response = await axios.patch(`${API_URL}${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
